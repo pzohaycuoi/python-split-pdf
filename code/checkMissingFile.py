@@ -1,16 +1,16 @@
 from os import listdir
 
-def checking_missing_file(filePath):
+def checking_missing_file(filePath, smallest_file_number, largest_file_number):
     dirPath = listdir(filePath)
 
-    smallestTchNoMinusOne = 425 #so thu chao hang nho nhat tru di 1
-    largestTchNo = 847 #so thu chao hang lon nhat
+    correct_file_list = []
 
-    correctTchList = []
-    for i in range(largestTchNo - smallestTchNoMinusOne):
-        smallestTchNoMinusOne += 1
-        correctTchList.append(str(smallestTchNoMinusOne)+"_20.pdf") # _20 thay doi theo so nam/file
+    #correct name for variable
+    for i in range(largest_file_number - smallest_file_number):
+        correct_file_list.append("{}.pdf".format(i))
+        i += 1
 
-    check = tuple(set(correctTchList) - set(dirPath))
+    check = tuple(set(correct_file_list) - set(dirPath))
     sortCheck = sorted(check)
+
     print(sortCheck)

@@ -32,5 +32,4 @@ def merging_file(mergePath, mergedPath):
 
     merger.write(merged_file_path)
     merger.close()
-    
     print("merge completed")
