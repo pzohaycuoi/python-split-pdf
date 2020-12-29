@@ -1,11 +1,10 @@
 from PyPDF2 import PdfFileReader, PdfFileWriter
 import os   
 
-def split_at_every(infile , step):
+def split_at_every(infile , step, file_number):
 
     input_pdf = PdfFileReader(open(infile, "rb"))
     pdf_len = input_pdf.numPages
-    file_number = 0
     page_numbers = list(range(0,pdf_len,step))
 
     for ind,val in enumerate(page_numbers):
@@ -36,3 +35,4 @@ def split_at_every(infile , step):
             outputStream2 = open(output_final_filename, "wb")
             output_final.write(outputStream2)
             outputStream2.close()
+
