@@ -5,7 +5,6 @@ def checking_missing_file(filePath, smallest_file_number, largest_file_number):
 
     correct_file_list = []
 
-    #correct name for variable
     for i in range(largest_file_number - smallest_file_number):
         correct_file_list.append("{}.pdf".format(i))
         i += 1
