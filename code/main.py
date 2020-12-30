@@ -29,3 +29,5 @@ elif a == 2:
     input3 = int(input())
     print("Input start file number: ", end=" ")
     input3 = int(input())
+elif a == 3:
+    
