@@ -30,7 +30,3 @@ elif a == 2:
     print("Input start file number: ", end=" ")
     input3 = int(input())
 elif a == 3:
-<<<<<<< HEAD
-=======
-    test tiep 1 2 3
->>>>>>> d233877aa15557dcbb38f20a424523687b30664b
