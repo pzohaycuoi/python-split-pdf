@@ -15,7 +15,6 @@ a = int(input())
 
 if a == 1:
     print("=== Merge the file ===")
-    
     print("Input folder contains files need to be merged: ", end=" ")
     input1 = str(input())
     print("Input destination for merged file: ", end=" ")
@@ -29,4 +28,4 @@ elif a == 2:
     input3 = int(input())
     print("Input start file number: ", end=" ")
     input3 = int(input())
-elif a == 3:
+#elif a == 3:

@@ -1,7 +1,7 @@
 from os import listdir
 
-def checking_missing_file(filePath, smallest_file_number, largest_file_number):
-    dirPath = listdir(filePath)
+def checking_missing_file(file_path, smallest_file_number, largest_file_number):
+    dirPath = listdir(file_path)
 
     correct_file_list = []
 
@@ -10,6 +10,6 @@ def checking_missing_file(filePath, smallest_file_number, largest_file_number):
         i += 1
 
     check = tuple(set(correct_file_list) - set(dirPath))
-    sortCheck = sorted(check)
+    sort_check = sorted(check)
 
-    print(sortCheck)
+    print(sort_check)

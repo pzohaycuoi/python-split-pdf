@@ -7,7 +7,7 @@ def split_at_every(infile , step, file_number):
     pdf_len = input_pdf.numPages
     page_numbers = list(range(0,pdf_len,step))
 
-    for ind,val in enumerate(page_numbers):
+    for ind in enumerate(page_numbers):
 
         if(ind+1 != len(page_numbers)):
             output_1 = PdfFileWriter()
@@ -19,9 +19,9 @@ def split_at_every(infile , step, file_number):
                 output_1_filename = '{}.pdf'.format(int(file_number)) #named file ascending order and parse float to int
                 print(output_1_filename)
 
-            outputStream1 = open(output_1_filename, "wb")
-            output_1.write(outputStream1)
-            outputStream1.close()
+            output_stream1 = open(output_1_filename, "wb")
+            output_1.write(output_stream1)
+            output_stream1.close()
         else:
             output_final = PdfFileWriter()
             output_final_filename = "Last_Pages"
