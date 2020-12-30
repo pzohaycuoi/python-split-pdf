@@ -30,4 +30,8 @@ elif a == 2:
     print("Input start file number: ", end=" ")
     input3 = int(input())
 elif a == 3:
+<<<<<<< HEAD
     
+=======
+    sudo        ok ok ok
+>>>>>>> 2a45ce847cbe559df89d50e8fe50ca8df579745d
