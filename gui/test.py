@@ -13,8 +13,7 @@ layout = [
      sg.In(), sg.FileBrowse()],
     [sg.Text('Destination folder', size=(15, 1),
              justification='right'), sg.In(), sg.FolderBrowse()],
-    [sg.Text('Input file name', size=(15, 1), justification='right'),
-     sg.Input(size=(8, 1))],
+    [sg.InputText('Input file name', size=(15,1)), sg.InputText('Input start number', size=(10,1))],
     [sg.Button('Ok'), sg.Button('Cancel')]
 ]
 
