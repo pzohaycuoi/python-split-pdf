@@ -1,14 +1,15 @@
 from PyPDF2 import PdfFileMerger
 from os import listdir
 
-def merging_file(merge_path, merged_path):    
-    #convert path to the right absoulute path
+
+def merging_file(merge_path, merged_path):
+    # convert path to the right absoulute path
     if merge_path.endswith('/'):
         input_dir = merge_path + '/'
     else:
         input_dir = merge_path + '//'
 
-    #convert path to the right absoulute path
+    # convert path to the right absoulute path
     if merged_path.endswith('/'):
         input_dir = merged_path + '/'
     else:
