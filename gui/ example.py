@@ -6,9 +6,9 @@ layout = [
     [sg.Text('Source file', size=(15, 1)),
      sg.InputText(size=(20, 1), key='source_file'), sg.FileBrowse()],
     [sg.Text('Destination folder', size=(15, 1)),
-     sg.InputText(size=(20, 1), key='destination_folder'), sg.FileBrowse()],
-    [sg.Text('File name'), sg.InputText(size=(10, 1), key='file_name'), sg.Text(
-        'Start number'), sg.InputText(size=(10, 1), key='file_start_number')],
+     sg.InputText(size=(20, 1), key='destination_folder'), sg.FolderBrowse()],
+    [sg.Text('File name'), sg.InputText(size=(10, 1), key='input_file_name', enable_events=True),
+     sg.Text('Start number'), sg.InputText(size=(10, 1), key='input_file_number', enable_events=True)],
     [sg.Radio('Ascending', 'rad1', pad=((0, 20), (0, 0)), key='sorting_asc'),
      sg.Radio('Descending', 'rad1', key='sorting_desc')],
     [sg.Button('OK'), sg.Button('Cancel')]
@@ -18,8 +18,17 @@ window = sg.Window('Title', layout)
 
 while True:
     event, values = window.read()
+
     if event in (sg.WINDOW_CLOSED, 'Cancel'):
         break
-    # if event in 
+    if event == 'input_file_number' and values['input_file_number'] and values['input_file_number'][-1] not in ('0123456789'):
+        window['input_file_number'].update(values['input_file_number'][:-1])
+    if event == 'input_file_name' and values['input_file_name'] and values['input_file_name'][-1] in ("'*<>?\|/:"".,`"):
+        window['input_file_name'].update(values['input_file_name'][:-1])
+    if event in ('OK'):
+        print(values['source_file'])
+        print(values['destination_folder'])
+        a = '{}/{}_{}.pdf'.format(values['destination_folder'], values['input_file_name'], values['input_file_number'])
+        print(a)
 
 window.close()
