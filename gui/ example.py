@@ -31,10 +31,9 @@ while True:
     if event == 'input_file_number' and file_number and file_number[-1] not in ('0123456789'):
         window['input_file_number'].update(file_number[:-1])
     if event in ('OK'):
-        if str(destination_folder).endswith("/"):
-            break
-        else:
+        if not str(destination_folder).endswith('/'):
             destination_folder = str(destination_folder) + '/'
+            
         print(source_file)
         print(destination_folder)
 
