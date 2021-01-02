@@ -1,4 +1,8 @@
 import PySimpleGUI as sg
+import sys
+sys.path.insert(0, '/home/yahaga/Documents/python-split-pdf/code')
+import split
+
 
 sg.theme('DarkAmber')
 
@@ -20,14 +24,15 @@ window = sg.Window('Title', layout)
 while True:
     event, values = window.read()
 
+    if event in (sg.WINDOW_CLOSED, 'Cancel'):
+        break
+    
     source_file = values['input_source_file']
     destination_folder = values['input_destination_folder']
     file_name = values['input_file_name']
     file_number = values['input_file_number']
     file_step = values['input_step']
 
-    if event in (sg.WINDOW_CLOSED, 'Cancel'):
-        break
     if event == 'input_file_name' and file_name and file_name[-1] in ("'*<>?\|/:"".,`"):
         window['input_file_name'].update(file_name[:-1])
     if event == 'input_file_number' and file_number and file_number[-1] not in ('0123456789'):
@@ -38,12 +43,7 @@ while True:
         if not str(destination_folder).endswith('/'):
             destination_folder = str(destination_folder) + '/'
 
-        print(source_file)
-        print(destination_folder)
-
         output_file_path = '{}{}_{}.pdf'.format(
             destination_folder, file_name, file_number)
-
-        print(output_file_path)
 
 window.close()
