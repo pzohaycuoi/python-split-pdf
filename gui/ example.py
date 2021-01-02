@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 import sys
-sys.path.insert(0, '/home/yahaga/Documents/python-split-pdf/code')
+sys.path.insert(0, '/home/yahagaubuntu/Documents/python-split-pdf/code')
 import split
 
 
@@ -14,8 +14,8 @@ layout = [
     [sg.Text('File name'), sg.InputText(size=(8, 1), key='input_file_name', enable_events=True),
      sg.Text('Start number'), sg.InputText(size=(4, 1), key='input_file_number', enable_events=True),
      sg.Text('Split range'), sg.InputText(size=(4, 1), key=('input_step'), enable_events=True)],
-    [sg.Radio('Ascending', 'rad1', pad=((0, 20), (0, 0)), key='sorting_asc'),
-     sg.Radio('Descending', 'rad1', key='sorting_desc')],
+    [sg.Radio('Ascending', 'rad1', pad=((0, 20), (0, 0)), key='input_sorting_asc'),
+     sg.Radio('Descending', 'rad1', key='input_sorting_desc')],
     [sg.Button('OK'), sg.Button('Cancel')]
 ]
 
@@ -32,6 +32,8 @@ while True:
     file_name = values['input_file_name']
     file_number = values['input_file_number']
     file_step = values['input_step']
+    sorting_asc = values['input_sorting_asc']
+    sorting_desc = values['input_sorting_desc']
 
     if event == 'input_file_name' and file_name and file_name[-1] in ("'*<>?\|/:"".,`"):
         window['input_file_name'].update(file_name[:-1])

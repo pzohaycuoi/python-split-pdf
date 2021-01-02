@@ -2,11 +2,11 @@ from PyPDF2 import PdfFileReader, PdfFileWriter
 import os
 
 
-def split_at_every(infile, step, file_number):
+def split_at_every(source_file, file_step, file_number):
 
-    input_pdf = PdfFileReader(open(infile, "rb"))
+    input_pdf = PdfFileReader(open(source_file, "rb"))
     pdf_len = input_pdf.numPages
-    page_numbers = list(range(0, pdf_len, step))
+    page_numbers = list(range(0, pdf_len, file_step))
 
     for ind in enumerate(page_numbers):
 
@@ -14,11 +14,15 @@ def split_at_every(infile, step, file_number):
             output_1 = PdfFileWriter()
 
             for page in range(page_numbers[ind], page_numbers[ind+1]):
-                # hmmmm dont know how to wisely explain this one...
-                file_number += (1 / step)
+                
+                if sorting_asc == True:
+                    file_number += (1 / file_step)
+                
+                if sorting_desc == True:
+                    file_number -= (1 / file_step)
+                
                 page_data = input_pdf.getPage(page)
                 output_1.addPage(page_data)
-                # named file ascending order and parse float to int
                 output_1_filename = '{}.pdf'.format(int(file_number))
                 print(output_1_filename)
 
