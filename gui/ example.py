@@ -1,7 +1,7 @@
+import split as splitfunc
 import PySimpleGUI as sg
 import sys
-sys.path.insert(0, '/home/yahagaubuntu/Documents/python-split-pdf/code')
-import split
+sys.path.insert(0, '/home/yahaga/Documents/python-split-pdf/code')
 
 
 sg.theme('DarkAmber')
@@ -12,7 +12,8 @@ layout = [
     [sg.Text('Destination folder', size=(15, 1)),
      sg.InputText(size=(20, 1), key='input_destination_folder'), sg.FolderBrowse()],
     [sg.Text('File name'), sg.InputText(size=(8, 1), key='input_file_name', enable_events=True),
-     sg.Text('Start number'), sg.InputText(size=(4, 1), key='input_file_number', enable_events=True),
+     sg.Text('Start number'), sg.InputText(size=(4, 1),
+                                           key='input_file_number', enable_events=True),
      sg.Text('Split range'), sg.InputText(size=(4, 1), key=('input_step'), enable_events=True)],
     [sg.Radio('Ascending', 'rad1', pad=((0, 20), (0, 0)), key='input_sorting_asc'),
      sg.Radio('Descending', 'rad1', key='input_sorting_desc')],
@@ -26,7 +27,7 @@ while True:
 
     if event in (sg.WINDOW_CLOSED, 'Cancel'):
         break
-    
+
     source_file = values['input_source_file']
     destination_folder = values['input_destination_folder']
     file_name = values['input_file_name']
@@ -45,7 +46,15 @@ while True:
         if not str(destination_folder).endswith('/'):
             destination_folder = str(destination_folder) + '/'
 
-        output_file_path = '{}{}_{}.pdf'.format(
-            destination_folder, file_name, file_number)
+        file_number_int = int(file_number)
+        file_step_int = int(file_step)
+
+        output_file_path = '{}{}'.format(
+            destination_folder, file_name)
+
+        sorting = [sorting_asc, sorting_desc]
+
+        splitfunc.split_at_every(
+            source_file, output_file_path, file_number_int, file_step_int, sorting)
 
 window.close()

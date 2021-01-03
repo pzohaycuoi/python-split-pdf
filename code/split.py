@@ -2,28 +2,29 @@ from PyPDF2 import PdfFileReader, PdfFileWriter
 import os
 
 
-def split_at_every(source_file, file_step, file_number):
+def split_at_every(source_file, output_file_path, file_number_int, file_step_int, sorting):
 
     input_pdf = PdfFileReader(open(source_file, "rb"))
     pdf_len = input_pdf.numPages
     page_numbers = list(range(0, pdf_len, file_step))
 
-    for ind in enumerate(page_numbers):
+    for ind, val in enumerate(page_numbers):
 
         if(ind+1 != len(page_numbers)):
             output_1 = PdfFileWriter()
 
             for page in range(page_numbers[ind], page_numbers[ind+1]):
-                
-                if sorting_asc == True:
+
+                if sorting[0] == True:
                     file_number += (1 / file_step)
-                
-                if sorting_desc == True:
+
+                if sorting[1] == True:
                     file_number -= (1 / file_step)
-                
+
                 page_data = input_pdf.getPage(page)
                 output_1.addPage(page_data)
-                output_1_filename = '{}.pdf'.format(int(file_number))
+                output_1_filename = '{}_{}.pdf'.format(
+                    output_file_path, file_number)
                 print(output_1_filename)
 
             output_stream1 = open(output_1_filename, "wb")
