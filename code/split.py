@@ -6,7 +6,7 @@ def split_at_every(source_file, output_file_path, file_number_int, file_step_int
 
     input_pdf = PdfFileReader(open(source_file, "rb"))
     pdf_len = input_pdf.numPages
-    page_numbers = list(range(0, pdf_len, file_step))
+    page_numbers = list(range(0, pdf_len, file_step_int))
 
     for ind, val in enumerate(page_numbers):
 
@@ -16,15 +16,15 @@ def split_at_every(source_file, output_file_path, file_number_int, file_step_int
             for page in range(page_numbers[ind], page_numbers[ind+1]):
 
                 if sorting[0] == True:
-                    file_number += (1 / file_step)
+                    file_number_int += (1 / file_step_int)
 
                 if sorting[1] == True:
-                    file_number -= (1 / file_step)
+                    file_number_int -= (1 / file_step_int)
 
                 page_data = input_pdf.getPage(page)
                 output_1.addPage(page_data)
                 output_1_filename = '{}_{}.pdf'.format(
-                    output_file_path, file_number)
+                    output_file_path, int(file_number_int))
                 print(output_1_filename)
 
             output_stream1 = open(output_1_filename, "wb")
@@ -37,8 +37,7 @@ def split_at_every(source_file, output_file_path, file_number_int, file_step_int
             for page in range(page_numbers[ind], pdf_len):
                 page_data = input_pdf.getPage(page)
                 output_final.addPage(page_data)
-                output_final_filename = '{}_page_{}.pdf'.format(
-                    "Last", page + 1)  # last file with number of the page
+                output_final_filename = '{}_lastpage_{}.pdf'.format(output_file_path, page + 1)
                 print(output_final_filename)
 
             outputStream2 = open(output_final_filename, "wb")

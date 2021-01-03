@@ -1,7 +1,7 @@
-import split as splitfunc
 import PySimpleGUI as sg
 import sys
 sys.path.insert(0, '/home/yahaga/Documents/python-split-pdf/code')
+import split as splitfunc
 
 
 sg.theme('DarkAmber')
@@ -12,8 +12,7 @@ layout = [
     [sg.Text('Destination folder', size=(15, 1)),
      sg.InputText(size=(20, 1), key='input_destination_folder'), sg.FolderBrowse()],
     [sg.Text('File name'), sg.InputText(size=(8, 1), key='input_file_name', enable_events=True),
-     sg.Text('Start number'), sg.InputText(size=(4, 1),
-                                           key='input_file_number', enable_events=True),
+     sg.Text('Start number'), sg.InputText(size=(4, 1), key='input_file_number', enable_events=True),
      sg.Text('Split range'), sg.InputText(size=(4, 1), key=('input_step'), enable_events=True)],
     [sg.Radio('Ascending', 'rad1', pad=((0, 20), (0, 0)), key='input_sorting_asc'),
      sg.Radio('Descending', 'rad1', key='input_sorting_desc')],
