@@ -1,7 +1,6 @@
 import PySimpleGUI as sg
 import sys
-sys.path.insert(0, '/home/yahaga/Documents/python-split-pdf/code')
-import split as splitfunc
+import code as splitfunc
 
 
 sg.theme('DarkAmber')
