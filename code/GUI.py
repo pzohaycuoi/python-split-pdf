@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 import sys
-import code as splitfunc
+import splitFunc
 
 
 sg.theme('DarkAmber')
@@ -52,7 +52,7 @@ while True:
 
         sorting = [sorting_asc, sorting_desc]
 
-        splitfunc.split_at_every(
+        splitFunc.split_at_every(
             source_file, output_file_path, file_number_int, file_step_int, sorting)
 
 window.close()
