@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 import sys
-import splitFunc
+
+from main import pdf_function as splitFunc
 
 
 sg.theme('DarkAmber')
