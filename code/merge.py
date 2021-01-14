@@ -34,3 +34,5 @@ def merging_file(merge_path, merged_path):
     merger.write(merged_file_path)
     merger.close()
     print("merge completed")
+
+merging_file('/home/yahagaubuntu/Documents/python-split-pdf/TestingExample/DestinationFolder', '/home/yahagaubuntu/Documents/python-split-pdf/TestingExample')
