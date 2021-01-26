@@ -22,34 +22,68 @@ split_Func_Tab = [
         sg.Text("Start number"),
         sg.InputText(size=(4, 1), key="input_file_number", enable_events=True),
         sg.Text("Split range"),
-        sg.InputText(size=(4, 1), key=("input_step"), enable_events=True),
+        sg.InputText(size=(4, 1), key="input_step", enable_events=True),
     ],
     [
         sg.Radio("Ascending", "rad1", pad=((0, 20), (0, 0)), key="input_sorting_asc"),
         sg.Radio("Descending", "rad1", key="input_sorting_desc"),
     ],
+    [
+        sg.Button("OK")    
+    ]
 ]
 
-Merge_Func_Tab = [[sg.Text("Test")]]
+Merge_Func_Tab = [
+    [
+        sg.Text("Source Folder", size=(15, 1)),
+        sg.InputText(size=(20, 1), key="input_source_folder"),
+        sg.FolderBrowse(),
+    ],
+    [
+        sg.Text("Merged Folder", size=(15, 1)),
+        sg.InputText(size=(20, 1), key="input_merged_folder"),
+        sg.FolderBrowse(),
+    ],
+    [
+        sg.Button("Select File", key="input_select_file")
+    ],
+    [
+        sg.Button("OK")
+    ]
+]
 
-Check_Missing_Func_Tab = [[sg.Text("Test")]]
+Check_Missing_Func_Tab = [
+    [sg.Text("con cac dmm"), sg.InputText(), sg.FolderBrowse()]
+]
+
+Merge_Func_Window = [
+    [sg.Text("con cac dmm"), sg.InputText(), sg.FolderBrowse()]
+]
 
 layout = [
     [
         sg.TabGroup(
-            [[sg.Tab("Split PDF", split_Func_Tab), sg.Tab("Merge PDF", Merge_Func_Tab), sg.Tab("Check Missing File", Check_Missing_Func_Tab)]]
+            [
+                [
+                    sg.Tab("Split PDF", split_Func_Tab),
+                    sg.Tab("Merge PDF", Merge_Func_Tab),
+                    sg.Tab("Check Missing File", Check_Missing_Func_Tab),
+                ]
+            ]
         )
-    ],
-    [sg.Button("OK"), sg.Button("Cancel")]
+    ]
 ]
 
 window = sg.Window("Nam Beo", layout)
+window2 = False
 
 while True:
     event, values = window.read()
 
-    if event in (sg.WINDOW_CLOSED, "Cancel"):
+    if event == sg.WINDOW_CLOSED:
         break
+    if event == "input_select_file":
+        window2 = sg.Window("WTF is this shit", Merge_Func_Window)
 
     # source_file = values["input_source_file"]
     # destination_folder = values["input_destination_folder"]

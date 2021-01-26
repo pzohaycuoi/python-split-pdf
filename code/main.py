@@ -50,24 +50,12 @@ class pdf_function:
                 outputStream2.close()
 
     def merging_file(merge_path, merged_path):
-        # convert path to the right absoulute path
-        if merge_path.endswith("/"):
-            input_dir = merge_path + "/"
-        else:
-            input_dir = merge_path + "//"
-
-        # convert path to the right absoulute path
-        if merged_path.endswith("/"):
-            input_dir = merged_path + "/"
-        else:
-            input_dir = merged_path + "//"
-
         merge_list = []
 
-        for x in os.listdir(input_dir):
+        for x in os.listdir(merge_path):
             if not x.endswith(".pdf"):
                 continue
-            merge_list.append(input_dir + x)
+            merge_list.append(merge_path + x)
 
         merger = PdfFileMerger()
         merge_list.sort(reverse=False)
@@ -80,7 +68,6 @@ class pdf_function:
 
         merger.write(merged_file_path)
         merger.close()
-        print("merge completed")
 
     def checking_missing_file(file_path, smallest_file_number, largest_file_number):
         dirPath = os.listdir(file_path)
