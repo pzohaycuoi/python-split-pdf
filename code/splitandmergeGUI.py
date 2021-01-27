@@ -1,8 +1,8 @@
 import PySimpleGUI as sg
 import sys
-
 from main import pdf_function as splitFunc
 
+# GUI
 sg.theme("DarkAmber")
 
 split_Func_Tab = [
@@ -45,7 +45,10 @@ Merge_Func_Tab = [
         sg.InputText(size=(20, 1), key="input_merged_folder"),
         sg.FolderBrowse(),
     ],
-    [sg.Button("Select File", key="input_select_file")],
+    [
+        sg.Button("Select File", key="input_select_file"),
+        sg.Button("Sorting File", key="input_sorting_file")
+    ],
     [sg.Button("OK")],
 ]
 
@@ -63,40 +66,41 @@ layout = [[
     sg.TabGroup([[
         sg.Tab("Split PDF", split_Func_Tab),
         sg.Tab("Merge PDF", Merge_Func_Tab),
-        sg.Tab("Check Missing File", Check_Missing_Func_Tab),
+        # sg.Tab("Check Missing File", Check_Missing_Func_Tab),
     ]])
 ]]
 
 window = sg.Window("Nam Beo", layout)
 window2 = False
 
+# GUI Function
 while True:
-    event, values = window.read()
+    event, value = window.read()
 
     if event == sg.WINDOW_CLOSED:
         break
 
     if event == "input_select_file" and not window2:
         window2 is True
-        window.Hide()
+        # window.Hide()
         window2 = sg.Window("WTF is this shit", Merge_Func_Window)
 
     while True:
-        event2, values2 = window2.read()
+        event2, value2 = window2.read()
 
         if event2 == sg.WINDOW_CLOSED:
             window2.Close()
             window2 = False
-            window.UnHide()
+            # window.UnHide()
             break
 
-    source_file = values["input_source_file"]
-    destination_folder = values["input_destination_folder"]
-    file_name = values["input_file_name"]
-    file_number = values["input_file_number"]
-    file_step = values["input_step"]
-    sorting_asc = values["input_sorting_asc"]
-    sorting_desc = values["input_sorting_desc"]
+    source_file = value["input_source_file"]
+    destination_folder = value["input_destination_folder"]
+    file_name = value["input_file_name"]
+    file_number = value["input_file_number"]
+    file_step = value["input_step"]
+    sorting_asc = value["input_sorting_asc"]
+    sorting_desc = value["input_sorting_desc"]
 
     if (event == "input_file_name" and file_name
             and file_name[-1] in ("'*<>?\|/:"
