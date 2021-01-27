@@ -114,6 +114,7 @@ while True:
                                  sg.Button("OK", key="Merge_Window_OK"),
                                  sg.Button("Cancel", key="Merge_Window_Cancel")
                              ]]
+
         window2 = sg.Window("Select File", Merge_Func_Window)
 
     while True:
