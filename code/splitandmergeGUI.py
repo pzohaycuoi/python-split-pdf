@@ -84,7 +84,7 @@ while True:
     while True:
         event2, values2 = window2.read()
 
-        if event == sg.WINDOW_CLOSED:
+        if event2 == sg.WINDOW_CLOSED:
             window2.Close()
             window2 = False
             window.UnHide()
