@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
 import sys
+import os
 from main import pdf_function as splitFunc
 
 # GUI
@@ -71,38 +72,52 @@ window2 = False
 # GUI Function
 while True:
     event, value = window.read()
-
     if event == sg.WINDOW_CLOSED:
         break
-
     if event == "input_select_file" and not window2:
         window2 is True
-        Merge_Func_Window = [
-            [sg.Text("Select File")],
-            [
-                sg.Tree(
-                    data=sg.TreeData(),
-                    auto_size_columns=True,
-                    headings=[
-                        "Size",
-                    ],
-                    num_rows=15,
-                    col0_width=30,
-                    key="Merge_Select_File_Tree",
-                    show_expanded=False,
-                    enable_events=True,
-                )
-            ],
-            [
-                sg.Button("OK", key="Merge_Window_OK"),
-                sg.Button("Cancel", key="Merge_Window_Cancel")
-            ]
-        ]
+
+        Tree_Data = sg.TreeData()
+
+        def display_file_in_folder(parent, source_folder):
+            files = os.listdir(source_folder)
+            for i in files:
+                File_Fullname = os.path.join(source_folder, i)
+                if os.path.isdir(File_Fullname):
+                    Tree_Data.Insert(parent, File_Fullname, i, values=[])
+                    display_file_in_folder(File_Fullname, File_Fullname)
+                else:
+                    Tree_Data.Insert(parent,
+                                     File_Fullname,
+                                     i,
+                                     values=[os.stat(File_Fullname).st_size])
+
+        Merge_Source_Folder = value["input_source_folder"]
+        display_file_in_folder('', Merge_Source_Folder)
+
+        Merge_Func_Window = [[sg.Text("Select File")],
+                             [
+                                 sg.Tree(
+                                     data=Tree_Data,
+                                     auto_size_columns=True,
+                                     headings=[
+                                         "Size",
+                                     ],
+                                     num_rows=15,
+                                     col0_width=30,
+                                     key="Merge_Select_File_Tree",
+                                     show_expanded=False,
+                                     enable_events=True,
+                                 )
+                             ],
+                             [
+                                 sg.Button("OK", key="Merge_Window_OK"),
+                                 sg.Button("Cancel", key="Merge_Window_Cancel")
+                             ]]
         window2 = sg.Window("Select File", Merge_Func_Window)
 
     while True:
         event2, value2 = window2.read()
-
         if event2 in (sg.WINDOW_CLOSED, "Merge_Window_Cancel"):
             window2.Close()
             window2 = False
@@ -115,31 +130,24 @@ while True:
     file_step = value["input_step"]
     sorting_asc = value["input_sorting_asc"]
     sorting_desc = value["input_sorting_desc"]
-
     if (event == "input_file_name" and file_name
             and file_name[-1] in ("'*<>?\|/:"
                                   ".,`")):
         window["input_file_name"].update(file_name[:-1])
-
     if (event == "input_file_number" and file_number
             and file_number[-1] not in ("0123456789")):
         window["input_file_number"].update(file_number[:-1])
-
     if (event == "input_file_number" and file_step
             and file_step[-1] not in ("0123456789")):
         window["input_file_number"].update(file_step[:-1])
-
     if event in ("OK"):
         if not str(destination_folder).endswith("/"):
             destination_folder = str(destination_folder) + "/"
 
         file_number_int = int(file_number)
         file_step_int = int(file_step)
-
         output_file_path = "{}{}".format(destination_folder, file_name)
-
         sorting = [sorting_asc, sorting_desc]
-
         splitFunc.split_at_every(source_file, output_file_path,
                                  file_number_int, file_step_int, sorting)
 
