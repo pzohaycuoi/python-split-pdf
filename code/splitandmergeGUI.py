@@ -47,17 +47,12 @@ Merge_Func_Tab = [
     ],
     [
         sg.Button("Select File", key="input_select_file"),
-        sg.Button("Sorting File", key="input_sorting_file")
+        sg.Button("Sorting File", key="input_sorting_file"),
     ],
     [sg.Button("OK")],
 ]
 
 Check_Missing_Func_Tab = [[
-    sg.Text("con cac dmm"),
-    sg.InputText(), sg.FolderBrowse()
-]]
-
-Merge_Func_Window = [[
     sg.Text("con cac dmm"),
     sg.InputText(), sg.FolderBrowse()
 ]]
@@ -82,16 +77,35 @@ while True:
 
     if event == "input_select_file" and not window2:
         window2 is True
-        # window.Hide()
-        window2 = sg.Window("WTF is this shit", Merge_Func_Window)
+        Merge_Func_Window = [
+            [sg.Text("Select File")],
+            [
+                sg.Tree(
+                    data=sg.TreeData(),
+                    auto_size_columns=True,
+                    headings=[
+                        "Size",
+                    ],
+                    num_rows=15,
+                    col0_width=30,
+                    key="Merge_Select_File_Tree",
+                    show_expanded=False,
+                    enable_events=True,
+                )
+            ],
+            [
+                sg.Button("OK", key="Merge_Window_OK"),
+                sg.Button("Cancel", key="Merge_Window_Cancel")
+            ]
+        ]
+        window2 = sg.Window("Select File", Merge_Func_Window)
 
     while True:
         event2, value2 = window2.read()
 
-        if event2 == sg.WINDOW_CLOSED:
+        if event2 in (sg.WINDOW_CLOSED, "Merge_Window_Cancel"):
             window2.Close()
             window2 = False
-            # window.UnHide()
             break
 
     source_file = value["input_source_file"]
