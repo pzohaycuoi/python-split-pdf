@@ -87,10 +87,12 @@ while True:
                     Tree_Data.Insert(parent, File_Fullname, i, values=[])
                     display_file_in_folder(File_Fullname, File_Fullname)
                 else:
-                    Tree_Data.Insert(parent,
-                                     File_Fullname,
-                                     i,
-                                     values=[os.stat(File_Fullname).st_size])
+                    if i.endswith(".pdf"):
+                        Tree_Data.Insert(
+                            parent,
+                            File_Fullname,
+                            i,
+                            values=[os.stat(File_Fullname).st_size])
 
         Merge_Source_Folder = value["input_source_folder"]
         display_file_in_folder('', Merge_Source_Folder)
