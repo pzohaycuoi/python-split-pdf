@@ -2,14 +2,14 @@ from PyPDF2 import PdfFileMerger, PdfFileReader, PdfFileWriter
 import os
 
 
-class pdf_function:
-    def split_at_every(
-        source_file, output_file_path, file_number_int, file_step_int, sorting
-    ):
+class PdfFunction:
+    def split_at_every(source_file, des_folder, file_name, file_number,
+                       file_step, sort):
 
         input_pdf = PdfFileReader(open(source_file, "rb"))
         pdf_len = input_pdf.numPages
-        page_numbers = list(range(0, pdf_len, file_step_int))
+        page_numbers = list(range(0, pdf_len, file_step))
+        des_path = os.path.join(des_folder, file_name)
 
         for ind, val in enumerate(page_numbers):
 
@@ -18,16 +18,15 @@ class pdf_function:
 
                 for page in range(page_numbers[ind], page_numbers[ind + 1]):
 
-                    if sorting[0] is True:
-                        file_number_int += 1 / file_step_int
-                    if sorting[1] is True:
-                        file_number_int -= 1 / file_step_int
+                    if sort[0] is True:
+                        file_number += 1 / file_step
+                    if sort[1] is True:
+                        file_number -= 1 / file_step
 
                     page_data = input_pdf.getPage(page)
                     output_1.addPage(page_data)
                     output_1_filename = "{}_{}.pdf".format(
-                        output_file_path, int(file_number_int)
-                    )
+                        des_path, int(file_number))
                     print(output_1_filename)
 
                 output_stream1 = open(output_1_filename, "wb")
@@ -41,8 +40,7 @@ class pdf_function:
                     page_data = input_pdf.getPage(page)
                     output_final.addPage(page_data)
                     output_final_filename = "{}_lastpage_{}.pdf".format(
-                        output_file_path, page + 1
-                    )
+                        des_path, page + 1)
                     print(output_final_filename)
 
                 outputStream2 = open(output_final_filename, "wb")
@@ -69,7 +67,8 @@ class pdf_function:
         merger.write(merged_file_path)
         merger.close()
 
-    def checking_missing_file(file_path, smallest_file_number, largest_file_number):
+    def checking_missing_file(file_path, smallest_file_number,
+                              largest_file_number):
         dirPath = os.listdir(file_path)
 
         correct_file_list = []

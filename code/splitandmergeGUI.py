@@ -1,7 +1,6 @@
 import PySimpleGUI as sg
-import sys
-import os
-from main import pdf_function as splitFunc
+from guifunction import GuiFunction as gf
+from main import PdfFunction as pf
 
 # GUI
 sg.theme("DarkAmber")
@@ -9,52 +8,48 @@ sg.theme("DarkAmber")
 split_Func_Tab = [
     [
         sg.Text("Source file", size=(15, 1)),
-        sg.InputText(size=(20, 1), key="split_inpt_source_file"),
+        sg.InputText(size=(20, 1), key="split_src_file"),
         sg.FileBrowse(),
     ],
     [
         sg.Text("Destination folder", size=(15, 1)),
-        sg.InputText(size=(20, 1), key="split_inpt_destination_folder"),
+        sg.InputText(size=(20, 1), key="split_des_folder"),
         sg.FolderBrowse(),
     ],
     [
         sg.Text("File name"),
-        sg.InputText(size=(8, 1),
-                     key="split_inpt_file_name",
-                     enable_events=True),
+        sg.InputText(size=(8, 1), key="split_file_name", enable_events=True),
         sg.Text("Start number"),
-        sg.InputText(size=(4, 1),
-                     key="split_inpt_file_number",
-                     enable_events=True),
+        sg.InputText(size=(4, 1), key="split_file_number", enable_events=True),
         sg.Text("Split range"),
-        sg.InputText(size=(4, 1), key="split_inpt_step", enable_events=True),
+        sg.InputText(size=(4, 1), key="split_step", enable_events=True),
     ],
     [
         sg.Radio("Ascending",
                  "rad1",
                  pad=((0, 20), (0, 0)),
-                 key="split_inpt_sorting_asc"),
-        sg.Radio("Descending", "rad1", key="split_inpt_sorting_desc"),
+                 key="split_sort_asc"),
+        sg.Radio("Descending", "rad1", key="split_sort_desc"),
     ],
-    [sg.Button("OK")],
+    [sg.Button("OK", key="split_ok")],
 ]
 
 Merge_Func_Tab = [
     [
         sg.Text("Source Folder", size=(15, 1)),
-        sg.InputText(size=(20, 1), key="Merge_inpt_source_folder"),
+        sg.InputText(size=(20, 1), key="merge_src_folder"),
         sg.FolderBrowse(),
     ],
     [
         sg.Text("Merged Folder", size=(15, 1)),
-        sg.InputText(size=(20, 1), key="Merge_inpt_merged_folder"),
+        sg.InputText(size=(20, 1), key="merge_des_folder"),
         sg.FolderBrowse(),
     ],
     [
-        sg.Button("Select File", key="Nerge_inpt_select_file"),
-        sg.Button("Sorting File", key="Merge_inpt_sorting_file"),
+        sg.Button("Select File", key="merge_select_file"),
+        sg.Button("Sorting File", key="merge_sorting_file"),
     ],
-    [sg.Button("OK")],
+    [sg.Button("OK", key="merge_ok")],
 ]
 
 Check_Missing_Func_Tab = [[
@@ -71,8 +66,8 @@ layout = [[
 ]]
 
 split_window = sg.Window("Nam Beo", layout)
-merge_select_file_window = False
-merge_sorting_file_window = False
+select_file_window = False
+sorting_file_window = False
 
 # GUI Function
 while True:
@@ -81,87 +76,58 @@ while True:
         break
 
     # split_window GUI Function
-    source_file = value["split_inpt_source_file"]
-    destination_folder = value["split_inpt_destination_folder"]
-    file_name = value["split_inpt_file_name"]
-    file_number = value["split_inpt_file_number"]
-    file_step = value["split_inpt_step"]
-    sorting_asc = value["split_inpt_sorting_asc"]
-    sorting_desc = value["split_inpt_sorting_desc"]
-    if (event == "split_inpt_file_name" and file_name
-            and file_name[-1] in ("'*<>?\|/:"
-                                  ".,`")):
-        split_window["split_inpt_file_name"].update(file_name[:-1])
-    if (event == "input_file_number" and file_number
-            and file_number[-1] not in ("0123456789")):
-        split_window["split_inpt_file_number"].update(file_number[:-1])
-    if (event == "split_inpt_file_number" and file_step
-            and file_step[-1] not in ("0123456789")):
-        split_window["split_inpt_file_number"].update(file_step[:-1])
-    if event in ("OK"):
-        if not str(destination_folder).endswith("/"):
-            destination_folder = str(destination_folder) + "/"
+    split_src_file = value["split_src_file"]
+    split_des_folder = value["split_des_folder"]
+    split_file_name = value["split_file_name"]
+    split_file_number = value["split_file_number"]
+    step = value["split_step"]
+    split_sort_asc = value["split_sort_asc"]
+    split_sort_desc = value["split_sort_desc"]
 
-        file_number_int = int(file_number)
-        file_step_int = int(file_step)
-        output_file_path = "{}{}".format(destination_folder, file_name)
-        sorting = [sorting_asc, sorting_desc]
-        splitFunc.split_at_every(source_file, output_file_path,
-                                 file_number_int, file_step_int, sorting)
+    if (event == "split_file_name" and split_file_name
+            and split_file_name[-1] in ("'*<>\\?|/:"
+                                        ".,`")):
+        split_window["split_file_name"].update(split_file_name[:-1])
+    if (event == "split_file_numer" and split_file_name
+            and split_file_number[-1] not in ("0123456789")):
+        split_window["split_file_number"].update(split_file_name[:-1])
+    if (event == "split_file_number" and step
+            and step[-1] not in ("0123456789")):
+        split_window["split_file_number"].update(step[:-1])
+    if event in ("split_ok"):
+
+        file_number_int = int(split_file_number)
+        file_step_int = int(step)
+        split_sort = [split_sort_asc, split_sort_desc]
+
+        pf.split_at_every(split_src_file, split_des_folder, split_file_name,
+                          file_number_int, file_step_int, split_sort)
 
     # merge_select_file_window GUI Function
-    if event == "Nerge_inpt_select_file" and not merge_select_file_window:
-        merge_select_file_window is True
-        Tree_Data = sg.TreeData()
+    if event == "merge_inpt_select_file" and not select_file_window:
+        select_file_window is True
+        file_path = []
+        file_name = []
+        Merge_Source_Folder = value["merge_inpt_source_folder"]
+        gf.add_files_in_folder(Merge_Source_Folder, file_path, file_name)
 
-        def display_file_in_folder(parent, source_folder):
-            files = os.listdir(source_folder)
-            for i in files:
-                File_Fullname = os.path.join(source_folder, i)
-                if os.path.isdir(File_Fullname):
-                    Tree_Data.Insert(parent, File_Fullname, i, values=[])
-                    display_file_in_folder(File_Fullname, File_Fullname)
-                else:
-                    if i.endswith(".pdf"):
-                        Tree_Data.Insert(
-                            parent,
-                            File_Fullname,
-                            i,
-                            values=[os.stat(File_Fullname).st_size])
+        merge_select_file_col = [[],
+                                 [
+                                     sg.Button("OK",
+                                               key="merge_select_file_ok"),
+                                     sg.Button("Cancel",
+                                               key="merge_select_file_cancel")
+                                 ]]
 
-        Merge_Source_Folder = value["Merge_inpt_source_folder"]
-        display_file_in_folder('', Merge_Source_Folder)
-
-        Merge_Select_File_split_window = [
-            [sg.Text("Select File")],
-            [
-                sg.Tree(
-                    data=Tree_Data,
-                    auto_size_columns=True,
-                    headings=[
-                        "Modified Time",
-                    ],
-                    num_rows=15,
-                    col0_width=30,
-                    key="Merge_Select_File_Tree",
-                    show_expanded=False,
-                    enable_events=True,
-                )
-            ],
-            [
-                sg.Button("OK", key="Merge_Select_split_window_OK"),
-                sg.Button("Cancel", key="Merge_Select_split_window_Cancel")
-            ]
-        ]
-
-        merge_select_file_window = sg.Window(
-            "Select File", Merge_Select_File_split_window)
+        merge_select_file_window = sg.Window("Select File",
+                                             merge_select_file_col)
         split_window.Hide()
 
     while True:
         event2, value2 = merge_select_file_window.read()
-        if event2 in (sg.WINDOW_CLOSED,
-                      "Merge_Select_split_window_Cancel"):
+        if event2 == "merge_select_file_ok":
+            print(file_name)
+        if event2 in (sg.WIN_CLOSED, "merge_select_file_cancel"):
             merge_select_file_window.Close()
             merge_select_file_window = False
             split_window.UnHide()
