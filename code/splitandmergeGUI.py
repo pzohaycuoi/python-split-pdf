@@ -104,29 +104,25 @@ while True:
                           file_number_int, file_step_int, split_sort)
 
     # merge_select_file_window GUI Function
-    if event == "merge_inpt_select_file" and not select_file_window:
+    if event == "merge_select_file" and not select_file_window:
         select_file_window is True
-        file_path = []
-        file_name = []
-        Merge_Source_Folder = value["merge_inpt_source_folder"]
-        gf.add_files_in_folder(Merge_Source_Folder, file_path, file_name)
 
-        merge_select_file_col = [[],
-                                 [
-                                     sg.Button("OK",
-                                               key="merge_select_file_ok"),
-                                     sg.Button("Cancel",
-                                               key="merge_select_file_cancel")
-                                 ]]
+        merge_src_folder = value["merge_src_folder"]
+        gf.add_files_in_folder(merge_src_folder)
+
+        merge_select_window = [[],
+                               [
+                                   sg.Button("OK", key="merge_select_file_ok"),
+                                   sg.Button("Cancel",
+                                             key="merge_select_file_cancel")
+                               ]]
 
         merge_select_file_window = sg.Window("Select File",
-                                             merge_select_file_col)
+                                             merge_select_window)
         split_window.Hide()
 
     while True:
         event2, value2 = merge_select_file_window.read()
-        if event2 == "merge_select_file_ok":
-            print(file_name)
         if event2 in (sg.WIN_CLOSED, "merge_select_file_cancel"):
             merge_select_file_window.Close()
             merge_select_file_window = False
