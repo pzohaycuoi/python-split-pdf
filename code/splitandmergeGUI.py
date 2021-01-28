@@ -9,28 +9,32 @@ sg.theme("DarkAmber")
 split_Func_Tab = [
     [
         sg.Text("Source file", size=(15, 1)),
-        sg.InputText(size=(20, 1), key="input_source_file"),
+        sg.InputText(size=(20, 1), key="split_inpt_source_file"),
         sg.FileBrowse(),
     ],
     [
         sg.Text("Destination folder", size=(15, 1)),
-        sg.InputText(size=(20, 1), key="input_destination_folder"),
+        sg.InputText(size=(20, 1), key="split_inpt_destination_folder"),
         sg.FolderBrowse(),
     ],
     [
         sg.Text("File name"),
-        sg.InputText(size=(8, 1), key="input_file_name", enable_events=True),
+        sg.InputText(size=(8, 1),
+                     key="split_inpt_file_name",
+                     enable_events=True),
         sg.Text("Start number"),
-        sg.InputText(size=(4, 1), key="input_file_number", enable_events=True),
+        sg.InputText(size=(4, 1),
+                     key="split_inpt_file_number",
+                     enable_events=True),
         sg.Text("Split range"),
-        sg.InputText(size=(4, 1), key="input_step", enable_events=True),
+        sg.InputText(size=(4, 1), key="split_inpt_step", enable_events=True),
     ],
     [
         sg.Radio("Ascending",
                  "rad1",
                  pad=((0, 20), (0, 0)),
-                 key="input_sorting_asc"),
-        sg.Radio("Descending", "rad1", key="input_sorting_desc"),
+                 key="split_inpt_sorting_asc"),
+        sg.Radio("Descending", "rad1", key="split_inpt_sorting_desc"),
     ],
     [sg.Button("OK")],
 ]
@@ -38,17 +42,17 @@ split_Func_Tab = [
 Merge_Func_Tab = [
     [
         sg.Text("Source Folder", size=(15, 1)),
-        sg.InputText(size=(20, 1), key="input_source_folder"),
+        sg.InputText(size=(20, 1), key="Merge_inpt_source_folder"),
         sg.FolderBrowse(),
     ],
     [
         sg.Text("Merged Folder", size=(15, 1)),
-        sg.InputText(size=(20, 1), key="input_merged_folder"),
+        sg.InputText(size=(20, 1), key="Merge_inpt_merged_folder"),
         sg.FolderBrowse(),
     ],
     [
-        sg.Button("Select File", key="input_select_file"),
-        sg.Button("Sorting File", key="input_sorting_file"),
+        sg.Button("Select File", key="Nerge_inpt_select_file"),
+        sg.Button("Sorting File", key="Merge_inpt_sorting_file"),
     ],
     [sg.Button("OK")],
 ]
@@ -68,15 +72,46 @@ layout = [[
 
 window = sg.Window("Nam Beo", layout)
 window2 = False
+window3 = False
 
 # GUI Function
 while True:
     event, value = window.read()
     if event == sg.WINDOW_CLOSED:
         break
-    if event == "input_select_file" and not window2:
-        window2 is True
 
+    # Window GUI Function
+    source_file = value["split_inpt_source_file"]
+    destination_folder = value["split_inpt_destination_folder"]
+    file_name = value["split_inpt_file_name"]
+    file_number = value["split_inpt_file_number"]
+    file_step = value["split_inpt_step"]
+    sorting_asc = value["split_inpt_sorting_asc"]
+    sorting_desc = value["split_inpt_sorting_desc"]
+    if (event == "split_inpt_file_name" and file_name
+            and file_name[-1] in ("'*<>?\|/:"
+                                  ".,`")):
+        window["split_inpt_file_name"].update(file_name[:-1])
+    if (event == "input_file_number" and file_number
+            and file_number[-1] not in ("0123456789")):
+        window["split_inpt_file_number"].update(file_number[:-1])
+    if (event == "split_inpt_file_number" and file_step
+            and file_step[-1] not in ("0123456789")):
+        window["split_inpt_file_number"].update(file_step[:-1])
+    if event in ("OK"):
+        if not str(destination_folder).endswith("/"):
+            destination_folder = str(destination_folder) + "/"
+
+        file_number_int = int(file_number)
+        file_step_int = int(file_step)
+        output_file_path = "{}{}".format(destination_folder, file_name)
+        sorting = [sorting_asc, sorting_desc]
+        splitFunc.split_at_every(source_file, output_file_path,
+                                 file_number_int, file_step_int, sorting)
+
+    # Window2 GUI Function
+    if event == "Nerge_inpt_select_file" and not window2:
+        window2 is True
         Tree_Data = sg.TreeData()
 
         def display_file_in_folder(parent, source_folder):
@@ -94,30 +129,32 @@ while True:
                             i,
                             values=[os.stat(File_Fullname).st_size])
 
-        Merge_Source_Folder = value["input_source_folder"]
+        Merge_Source_Folder = value["Merge_inpt_source_folder"]
         display_file_in_folder('', Merge_Source_Folder)
 
-        Merge_Func_Window = [[sg.Text("Select File")],
-                             [
-                                 sg.Tree(
-                                     data=Tree_Data,
-                                     auto_size_columns=True,
-                                     headings=[
-                                         "Size",
-                                     ],
-                                     num_rows=15,
-                                     col0_width=30,
-                                     key="Merge_Select_File_Tree",
-                                     show_expanded=False,
-                                     enable_events=True,
-                                 )
-                             ],
-                             [
-                                 sg.Button("OK", key="Merge_Window_OK"),
-                                 sg.Button("Cancel", key="Merge_Window_Cancel")
-                             ]]
+        Merge_Select_File_Window = [
+            [sg.Text("Select File")],
+            [
+                sg.Tree(
+                    data=Tree_Data,
+                    auto_size_columns=True,
+                    headings=[
+                        "Modified Time",
+                    ],
+                    num_rows=15,
+                    col0_width=30,
+                    key="Merge_Select_File_Tree",
+                    show_expanded=False,
+                    enable_events=True,
+                )
+            ],
+            [
+                sg.Button("OK", key="Merge_Select_Window_OK"),
+                sg.Button("Cancel", key="Merge_Select_Window_Cancel")
+            ]
+        ]
 
-        window2 = sg.Window("Select File", Merge_Func_Window)
+        window2 = sg.Window("Select File", Merge_Select_File_Window)
 
     while True:
         event2, value2 = window2.read()
@@ -126,32 +163,12 @@ while True:
             window2 = False
             break
 
-    source_file = value["input_source_file"]
-    destination_folder = value["input_destination_folder"]
-    file_name = value["input_file_name"]
-    file_number = value["input_file_number"]
-    file_step = value["input_step"]
-    sorting_asc = value["input_sorting_asc"]
-    sorting_desc = value["input_sorting_desc"]
-    if (event == "input_file_name" and file_name
-            and file_name[-1] in ("'*<>?\|/:"
-                                  ".,`")):
-        window["input_file_name"].update(file_name[:-1])
-    if (event == "input_file_number" and file_number
-            and file_number[-1] not in ("0123456789")):
-        window["input_file_number"].update(file_number[:-1])
-    if (event == "input_file_number" and file_step
-            and file_step[-1] not in ("0123456789")):
-        window["input_file_number"].update(file_step[:-1])
-    if event in ("OK"):
-        if not str(destination_folder).endswith("/"):
-            destination_folder = str(destination_folder) + "/"
+    Merge_Select_File = value2["Merge_Input_Select_File"]
 
-        file_number_int = int(file_number)
-        file_step_int = int(file_step)
-        output_file_path = "{}{}".format(destination_folder, file_name)
-        sorting = [sorting_asc, sorting_desc]
-        splitFunc.split_at_every(source_file, output_file_path,
-                                 file_number_int, file_step_int, sorting)
+    # Window3 GUI Function
+    if event == "input_sorting_file":
+        window3 = True
+
+        Merge_Sorting_Window = []
 
 window.close()
