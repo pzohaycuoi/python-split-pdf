@@ -111,9 +111,11 @@ while True:
         merge_src_folder = value["merge_src_folder"]
         file_name = gf.add_files_in_folder(merge_src_folder)
 
-        merge_select_window = [[
-            sg.Text("Select File")
-        ], [gf.check_box_generator(fn) for fn in file_name],
+        merge_ls_file_col = [[gf.check_box_generator(file_name[fn])]
+                             for fn in range(len(file_name))]
+
+        merge_select_window = [[sg.Text("Select File")],
+                               [sg.Column(merge_ls_file_col)],
                                [
                                    sg.Button("OK", key="merge_select_file_ok"),
                                    sg.Button("Cancel",
