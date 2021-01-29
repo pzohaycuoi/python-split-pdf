@@ -117,9 +117,9 @@ while True:
         merge_select_window = [[sg.Text("Select File")],
                                [sg.Column(merge_ls_file_col)],
                                [
-                                   sg.Button("OK", key="merge_select_file_ok"),
+                                   sg.Button("OK", key="merge_select_ok"),
                                    sg.Button("Cancel",
-                                             key="merge_select_file_cancel")
+                                             key="merge_select_cancel")
                                ]]
 
         merge_select_file_window = sg.Window("Select File",
@@ -128,9 +128,10 @@ while True:
 
     while True:
         event2, value2 = merge_select_file_window.read()
-        if event2 == "merge_select_file_ok":
-            print(file_name)
-        if event2 in (sg.WIN_CLOSED, "merge_select_file_cancel"):
+        if event2 == "merge_select_ok":
+            ls_file_name = gf.get_src_file(value2)
+            print(ls_file_name)
+        if event2 in (sg.WIN_CLOSED, "merge_select_cancel"):
             merge_select_file_window.Close()
             merge_select_file_window = False
             split_window.UnHide()
