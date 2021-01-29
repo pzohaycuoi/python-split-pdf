@@ -10,7 +10,7 @@ class GuiFunction():
         for i in files:
             if i.endswith(".pdf"):
                 file_name.append(i)
+        return file_name
 
     def check_box_generator(file_name):
-        for i in file_name:
-            return sg.Checkbox(i, size=(20, 1), default=False)
+        return sg.Checkbox(file_name, size=(20, 1), default=False)
